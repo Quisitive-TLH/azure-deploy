@@ -22,7 +22,7 @@ Enable-RemoteDesktop
 
 try {
   # https://github.com/chocolatey/choco/issues/52
-  #choco feature enable allowInsecureConfirmation
+  choco feature enable allowGlobalConfirmation
 
   mkdir c:\temp -Confirm:0 -ErrorAction Ignore
 
