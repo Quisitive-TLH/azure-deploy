@@ -1,5 +1,5 @@
 ######################################################
-# To run this, use browser and go to http://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/AzureArchitecture/azure-deploy/master/code/infrastructure/arm/workstation/boxstarter-workstation.ps1
+# To run this, use browser and go to http://boxstarter.org/package/nr/url?http://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/Quisitive-TLH/azure-deploy/master/code/infrastructure/arm/workstation/boxstarter-workstation.ps1
 ######################################################
 # instructions at http://boxstarter.org/Learn/WebLauncher
 
