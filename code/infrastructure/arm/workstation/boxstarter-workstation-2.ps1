@@ -4,58 +4,59 @@
 # instructions at http://boxstarter.org/Learn/WebLauncher
 
 # Boxstarter Options
+Write-Host "Boxstarter Options"
 $Boxstarter.RebootOk=$true # Allow reboots?
 $Boxstarter.NoPassword=$false # Is this a machine with no login password?
 $Boxstarter.AutoLogin=$true # Save my password securely and auto-login after a reboot
 
 # Boxstarter (not Chocolatey) commands
-Write-Output "Update-ExecutionPolicy"
+Write-Host "Update-ExecutionPolicy"
 Update-ExecutionPolicy Unrestricted
 
-Write-Output "Disable-InternetExplorerESC"
+Write-Host "Disable-InternetExplorerESC"
 Disable-InternetExplorerESC  #Turns off IE Enhanced Security Configuration that is on by default on Server OS versions
 
-Write-Output "Disable-UAC"
+Write-Host "Disable-UAC"
 Disable-UAC  # until this is over
 
-Write-Output "disable-computerrestore"
+Write-Host "disable-computerrestore"
 disable-computerrestore -drive "C:\"  # http://ss64.com/ps/disable-computerrestore.html  
 
-Write-Output "Disable-MicrosoftUpdate"
+Write-Host "Disable-MicrosoftUpdate"
 Disable-MicrosoftUpdate # until this is over
 
-Write-Output "Enable-RemoteDesktop"
+Write-Host "Enable-RemoteDesktop"
 Enable-RemoteDesktop
 
 try {
-  Write-Output "choco feature enable - start"
+  Write-Host "choco feature enable - start"
   # https://github.com/chocolatey/choco/issues/52
   #choco feature enable -n=allowGlobalConfirmation
-  Write-Output "choco feature enable - end"
+  Write-Host "choco feature enable - end"
 
   
-  Write-Output "make temp dir - start"
+  Write-Host "make temp dir - start"
   mkdir c:\temp -Confirm:0 -ErrorAction Ignore
-  Write-Output "make temp dir - end"
+  Write-Host "make temp dir - end"
 
-  Write-Output "make repos dir - start"
+  Write-Host "make repos dir - start"
   $repoCoreDir = "C:\repos"
   mkdir "$repoCoreDir" -Confirm:0 -ErrorAction Ignore
-  Write-Output "make repos dir - end"
+  Write-Host "make repos dir - end"
 
-  Write-Output "create boxstarter log - start"
+  Write-Host "create boxstarter log - start"
   $Boxstarter.Log="C:\temp\boxstarter.log"
   $Boxstarter.SuppressLogging=$false
-  Write-Output "create boxstarter log - end"
+  Write-Host "create boxstarter log - end"
 
   ######################################################
   # settings-system.ps1
   ######################################################
-  Write-Output "system settings - start"
+  Write-Host "system settings - start"
   #--- Enable developer mode on the system ---
   Set-ItemProperty -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\AppModelUnlock -Name AllowDevelopmentWithoutDevLicense -Value 1
 
-  Write-Output "  Modifying Explorer options"
+  Write-Host "  Modifying Explorer options"
   Set-WindowsExplorerOptions -EnableShowFileExtensions -EnableShowFullPathInTitleBar
  
   #Write-Output "Modifying taskbar options"
