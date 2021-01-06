@@ -12,6 +12,6 @@ This template allows you to deploy an Azure Development Windows VM using the lat
 
 After the VM is deployed. Open a browser with this link to complete the workstations setup. 
 
-http://boxstarter.org/package/nr/url?http://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/Quisitive-TLH/azure-deploy/master/code/infrastructure/arm/workstation/boxstarter-workstation.ps1
+http://boxstarter.org/package/nr/url?http://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/travis-hofmeister-quisitive/azure-deploy/master/code/infrastructure/arm/workstation/boxstarter-workstation.ps1
 
 Complete instructions are available at Boxstarter: http://boxstarter.org/Learn/WebLauncher

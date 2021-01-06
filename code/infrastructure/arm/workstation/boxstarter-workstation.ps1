@@ -1,5 +1,5 @@
 ######################################################
-# To run this, use browser and go to http://boxstarter.org/package/nr/url?http://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/Quisitive-TLH/azure-deploy/master/code/infrastructure/arm/workstation/boxstarter-workstation.ps1
+# To run this, use browser and go to http://boxstarter.org/package/nr/url?http://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/travis-hofmeister-quisitive/azure-deploy/master/code/infrastructure/arm/workstation/boxstarter-workstation.ps1
 ######################################################
 # instructions at http://boxstarter.org/Learn/WebLauncher
 
@@ -22,7 +22,7 @@ Enable-RemoteDesktop
 
 try {
   # https://github.com/chocolatey/choco/issues/52
-  #choco feature enable -n=allowGlobalConfirmation
+  choco feature enable -n=allowGlobalConfirmation
 
   mkdir c:\temp -Confirm:0 -ErrorAction Ignore
 
