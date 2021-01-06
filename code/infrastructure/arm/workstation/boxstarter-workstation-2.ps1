@@ -9,14 +9,22 @@ $Boxstarter.NoPassword=$false # Is this a machine with no login password?
 $Boxstarter.AutoLogin=$true # Save my password securely and auto-login after a reboot
 
 # Boxstarter (not Chocolatey) commands
+Write-Output "Update-ExecutionPolicy"
 Update-ExecutionPolicy Unrestricted
-# Enable-RemoteDesktop  # already enabled on Azure VMs and no thanks for my laptop.
+
+Write-Output "Disable-InternetExplorerESC"
 Disable-InternetExplorerESC  #Turns off IE Enhanced Security Configuration that is on by default on Server OS versions
+
+Write-Output "Disable-UAC"
 Disable-UAC  # until this is over
 
+Write-Output "disable-computerrestore"
 disable-computerrestore -drive "C:\"  # http://ss64.com/ps/disable-computerrestore.html  
 
+Write-Output "Disable-MicrosoftUpdate"
 Disable-MicrosoftUpdate # until this is over
+
+Write-Output "Enable-RemoteDesktop"
 Enable-RemoteDesktop
 
 try {
@@ -46,7 +54,6 @@ try {
   Write-Output "system settings - start"
   #--- Enable developer mode on the system ---
   Set-ItemProperty -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\AppModelUnlock -Name AllowDevelopmentWithoutDevLicense -Value 1
-
 
   Write-Output "  Modifying Explorer options"
   Set-WindowsExplorerOptions -EnableShowFileExtensions -EnableShowFullPathInTitleBar
