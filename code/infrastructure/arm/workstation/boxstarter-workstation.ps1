@@ -17,32 +17,38 @@ Disable-UAC  # until this is over
 disable-computerrestore -drive "C:\"  # http://ss64.com/ps/disable-computerrestore.html  
 
 Disable-MicrosoftUpdate # until this is over
-Disable-BingSearch # forever
 Enable-RemoteDesktop
 
 try {
+  Write-Output "choco feature enable - start"
   # https://github.com/chocolatey/choco/issues/52
   #choco feature enable -n=allowGlobalConfirmation
+  Write-Output "choco feature enable - end"
 
+  
+  Write-Output "make temp dir - start"
   mkdir c:\temp -Confirm:0 -ErrorAction Ignore
+  Write-Output "make temp dir - end"
 
+  Write-Output "make repos dir - start"
   $repoCoreDir = "C:\repos"
   mkdir "$repoCoreDir" -Confirm:0 -ErrorAction Ignore
-  #mkdir "$repoCoreDir\github" -Confirm:0 -ErrorAction Ignore
-  #mkdir "$repoCoreDir\github\AzureArchitecture" -Confirm:0 -ErrorAction Ignore
+  Write-Output "make repos dir - end"
 
+  Write-Output "create boxstarter log - start"
   $Boxstarter.Log="C:\temp\boxstarter.log"
   $Boxstarter.SuppressLogging=$false
-
+  Write-Output "create boxstarter log - end"
 
   ######################################################
   # settings-system.ps1
   ######################################################
+  Write-Output "system settings - start"
   #--- Enable developer mode on the system ---
   Set-ItemProperty -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\AppModelUnlock -Name AllowDevelopmentWithoutDevLicense -Value 1
 
 
-  Write-Output "Modifying Explorer options"
+  Write-Output "  Modifying Explorer options"
   Set-WindowsExplorerOptions -EnableShowFileExtensions -EnableShowFullPathInTitleBar
  
   #Write-Output "Modifying taskbar options"
@@ -51,7 +57,7 @@ try {
   ######################################################
   # Installing Dev Tools
   ######################################################
-  Write-Host "Installing Dev Tools"
+  Write-Host "  Installing Dev Tools"
   choco install googlechrome -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache"
   choco install git.install -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache" 
   choco install visualstudio2019community --All -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache"
@@ -85,28 +91,8 @@ try {
 
   choco install sourcetree -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache"
   choco install 7zip.install -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache"
+  Write-Output "system settings - end"
   Write-Host
-
-  <#
-  choco install sysinternals -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache" 
-  choco install rdcman -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache" 
-  choco install gitbook-editor -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache" 
-  choco install textgenerator -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache"
-  choco install trailingwhitespace -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache"
-  choco install webextensionpack -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache"
-  choco install extensibilitytools -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache"
-  choco install atom -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache"
-  choco install filezilla -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache"
-  choco install paint.net -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache"
-  choco install chocolateygui -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache"
-  choco install fiddler -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache"
-  choco install azure-documentdb-emulator -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache"
-  choco install azure-devops-policy-configurator -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache"
-  choco install ignorefiles -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache"
-  choco install imagesprites -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache"
-  choco install openinvscode -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache"
-  choco install packageinstaller -y --cacheLocation "$env:UserProfile\AppData\Local\ChocoCache"
-  #>   
 
   ######################################################
   # Taskbar icons
