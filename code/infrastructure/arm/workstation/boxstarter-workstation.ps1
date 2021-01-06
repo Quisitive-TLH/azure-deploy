@@ -28,8 +28,8 @@ try {
 
   $repoCoreDir = "C:\repos"
   mkdir "$repoCoreDir" -Confirm:0 -ErrorAction Ignore
-  mkdir "$repoCoreDir\github" -Confirm:0 -ErrorAction Ignore
-  mkdir "$repoCoreDir\github\AzureArchitecture" -Confirm:0 -ErrorAction Ignore
+  #mkdir "$repoCoreDir\github" -Confirm:0 -ErrorAction Ignore
+  #mkdir "$repoCoreDir\github\AzureArchitecture" -Confirm:0 -ErrorAction Ignore
 
   $Boxstarter.Log="C:\temp\boxstarter.log"
   $Boxstarter.SuppressLogging=$false
@@ -149,92 +149,3 @@ catch {
 # End of Chocolatey
 #
 ###########################################################################################################
-
-#
-# Function for refreshing environment variables
-#
-function RefreshEnvironment() {
-    foreach($envLevel in "Machine","User") {
-        [Environment]::GetEnvironmentVariables($envLevel).GetEnumerator() | ForEach-Object {
-            # For Path variables, append the new values, if they're not already in there
-            if($_.Name -match 'Path$') {
-               $_.Value = ($((Get-Content "Env:$($_.Name)") + ";$($_.Value)") -Split ';' | Select-Object -Unique) -Join ';'
-            }
-            $_
-         } | Set-Content -Path { "Env:$($_.Name)" }
-    }
-}
-#
-# Function to create a path if it does not exist
-#
-function CreatePathIfNotExists($pathName) {
-    if(!(Test-Path -Path $pathName)) {
-        New-Item -ItemType directory -Path $pathName
-    }
-}
-#
-# Function to Download and Extract ZIP Files for CLIs and the likes
-#
-function DownloadAndExtractZip($link, $targetFolder, $tempName) {
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-
-    $downloadPath = ($env:TEMP + "\$tempName")
-    if(!(Test-Path -Path $downloadPath)) {
-        Invoke-WebRequest $link -OutFile $downloadPath
-    }
-    $shell = New-Object -ComObject Shell.Application
-    $targetZip = $shell.NameSpace($downloadPath)
-
-    CreatePathIfNotExists($targetFolder)
-    foreach($item in $targetZip.items()) {
-        $shell.Namespace($targetFolder).CopyHere($item)
-    }
-}
-#
-# Function to Download and Copy Files to location
-#
-function DownloadAndCopy($link, $targetFolder) {
-    CreatePathIfNotExists($targetFolder)
-
-    if(!(Test-Path -Path $targetFolder)) {
-        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-        Invoke-WebRequest $link -OutFile $targetFolder
-    }
-}
-#
-# Function to Download and ExecuteMSI
-#
-function DownloadAndInstallMsi($link, $targetFolder, $targetName) {
-    CreatePathIfNotExists($targetFolder)
-
-    $targetName = [System.IO.Path]::Combine($targetFolder, $targetName)
-
-    if(!(Test-Path -Path $targetName)) {
-        Invoke-WebRequest $link -OutFile $targetName
-    }
-
-    # Execute the MSI
-    Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$targetName`" /passive" -Wait
-
-    # After completed, delete the MSI-package, again
-    Remove-Item -Path $targetName
-}
-#
-# Function to Download and Execute exe
-#
-function DownloadAndInstallExe($link, $targetFolder, $targetName, $targetParams) {
-    # .\FiddlerSetup.exe /S /D=C:\tools\Fiddler
-    CreatePathIfNotExists($targetFolder)
-
-    $targetName = [System.IO.Path]::Combine($targetFolder, $targetName)
-
-    if(!(Test-Path -Path $targetName)) {
-        Invoke-WebRequest $link -OutFile $targetName
-    }
-
-    # Execute the Installer-EXE
-    Start-Process -FilePath "$targetName" -ArgumentList "$targetParams" -Wait
-
-    # After completed, delete the MSI-package, again
-    Remove-Item -Path $targetName
-}
